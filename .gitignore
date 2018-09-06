@@ -1,5 +1,5 @@
 # Intellij library locations (prevents library path collisions across different machines
-.idea/libraries/
+.idea/
 
 # Prevent uploading giant fucking log files along with your commit
 log/standard/
