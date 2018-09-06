@@ -1,0 +1,10 @@
+# Intellij\Eclipse project setup file (prevents library path collisions across different machines
+*.iml
+*.classpath
+
+# Prevent uploading giant fucking log files along with your commit
+/log/standard/
+
+# Why the fuck would you upload compiled .class files?
+/out/
+
