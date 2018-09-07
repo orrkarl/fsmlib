@@ -1,7 +1,6 @@
-package org.gbutil.fsm.node.end;
+package org.gbutil.fsm.node;
 
 import org.gbutil.fsm.IState;
-import org.gbutil.fsm.node.ISMNode;
 
 public abstract class SMEndNode<S extends IState> implements ISMNode<S> {
     protected boolean mValue;

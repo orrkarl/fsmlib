@@ -2,7 +2,7 @@ package org.gbutil.fsm;
 
 
 import org.apache.logging.log4j.LogManager;
-import org.gbutil.fsm.node.connected.ISMConnectedNode;
+import org.gbutil.fsm.node.ISMConnectedNode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

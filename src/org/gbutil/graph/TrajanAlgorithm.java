@@ -18,28 +18,33 @@ public class TrajanAlgorithm<T> {
         }
     }
 
-    private T[] mNodes;
+    private List<T> mNodes;
     private TrajanNode[] mTrajanNodes;
     private boolean[][] mConnectionMatrix;
     private int index = 0;
     private Stack<TrajanNode> nodeStack = new Stack<>();
     private List<Set<T>> mStronglyConnected = new LinkedList<>();
 
-    private TrajanAlgorithm(T[] nodes, boolean[][] connectionMatrix) {
+    private TrajanAlgorithm(List<T> nodes, boolean[][] connectionMatrix) {
         mNodes = nodes;
         mConnectionMatrix = connectionMatrix;
 
-        mTrajanNodes = new TrajanNode[nodes.length];
-        for (int i = 0; i < nodes.length; i++) {
+        mTrajanNodes = new TrajanNode[nodes.size()];
+        for (int i = 0; i < nodes.size(); i++) {
             mTrajanNodes[i] = new TrajanNode(i);
         }
     }
 
-    public static <T> List<Set<T>> getStronglyConnectedComponents(T[] nodes, boolean[][] connectionMatrix) {
-        assert (connectionMatrix.length == nodes.length);
-        assert (Arrays.stream(connectionMatrix).filter(arr -> arr.length != nodes.length).count() == 0);
+    public static <T> List<Set<T>> getStronglyConnectedComponents(List<T> nodes, boolean[][] connectionMatrix) {
+        assert (connectionMatrix.length == nodes.size());
+        assert (Arrays.stream(connectionMatrix).filter(arr -> arr.length != nodes.size()).count() == 0);
         TrajanAlgorithm<T> algorithm = new TrajanAlgorithm<>(nodes, connectionMatrix);
         return algorithm.executeAlgorithm();
+    }
+
+    public static <T> boolean hasStronglyConnectedComponents(List<T> nodes, boolean[][] connectionMatrix) {
+        List<Set<T>> res = getStronglyConnectedComponents(nodes, connectionMatrix);
+        return res.size() != 1 || res.get(0).size() != 0;
     }
 
     private void findStronglyConnectedRec(TrajanNode node) {
@@ -60,7 +65,7 @@ public class TrajanAlgorithm<T> {
             do {
                 other = nodeStack.pop();
                 other.onStack = false;
-                ret.add(mNodes[other.node]);
+                ret.add(mNodes.get(other.node));
             } while (other != node);
         }
         if (ret.size() > 1) mStronglyConnected.add(ret);

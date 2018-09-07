@@ -1,4 +1,4 @@
-package org.gbutil.fsm.node.connected.active;
+package org.gbutil.fsm.node;
 
 import org.gbutil.fsm.IState;
 

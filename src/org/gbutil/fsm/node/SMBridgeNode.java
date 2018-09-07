@@ -1,7 +1,6 @@
-package org.gbutil.fsm.node.connected.bridge;
+package org.gbutil.fsm.node;
 
 import org.gbutil.fsm.IState;
-import org.gbutil.fsm.node.connected.SMConnectedNode;
 
 import java.util.function.Function;
 

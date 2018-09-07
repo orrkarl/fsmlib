@@ -1,7 +1,6 @@
-package org.gbutil.fsm.node.connected.active;
+package org.gbutil.fsm.node;
 
 import org.gbutil.fsm.IState;
-import org.gbutil.fsm.node.connected.SMConnectedNode;
 
 public abstract class SMAbstractActiveNode<L extends Enum<L>, S extends IState> extends SMConnectedNode<L, S> {
 

@@ -1,4 +1,4 @@
-package org.gbutil.fsm.node.connected.bridge;
+package org.gbutil.fsm.node;
 
 import org.gbutil.fsm.IState;
 
