@@ -1,10 +1,10 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.connected.active;
 
 import org.gbutil.fsm.IState;
 
 import java.util.function.Function;
 
-public abstract class SMActiveNode<L extends Enum<L>, S extends IState> extends SMAbstractActiveNode<L, S> {
+public abstract class SMActiveNode<L, S extends IState> extends SMAbstractActiveNode<L, S> {
     private Function<S, L> mParser;
 
     public SMActiveNode(String name, Function<S, L> parser) {

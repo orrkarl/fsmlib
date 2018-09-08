@@ -1,5 +1,6 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.end;
 
+import org.apache.logging.log4j.LogManager;
 import org.gbutil.fsm.IState;
 
 public class SMEndInactiveNode<S extends IState> extends SMEndNode<S> {
@@ -12,6 +13,7 @@ public class SMEndInactiveNode<S extends IState> extends SMEndNode<S> {
 
     @Override
     public boolean execute(S state) {
+        LogManager.getRootLogger().trace("currently at node " + getNodeName());
         return asBoolean();
     }
 }

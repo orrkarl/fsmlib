@@ -1,10 +1,11 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.connected.bridge;
 
 import org.gbutil.fsm.IState;
+import org.gbutil.fsm.node.connected.SMConnectedNode;
 
 import java.util.function.Function;
 
-public abstract class SMBridgeNode<L extends Enum<L>, S extends IState> extends SMConnectedNode<L, S> {
+public abstract class SMBridgeNode<L, S extends IState> extends SMConnectedNode<L, S> {
 
     public SMBridgeNode(String name) {
         super(name);

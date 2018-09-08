@@ -1,4 +1,4 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.end;
 
 import org.gbutil.fsm.IState;
 

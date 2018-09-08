@@ -1,8 +1,9 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.connected.active;
 
 import org.gbutil.fsm.IState;
+import org.gbutil.fsm.node.connected.SMConnectedNode;
 
-public abstract class SMAbstractActiveNode<L extends Enum<L>, S extends IState> extends SMConnectedNode<L, S> {
+public abstract class SMAbstractActiveNode<L, S extends IState> extends SMConnectedNode<L, S> {
 
     public SMAbstractActiveNode(String name) {
         super(name);

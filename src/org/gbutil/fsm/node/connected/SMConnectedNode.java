@@ -1,14 +1,14 @@
-package org.gbutil.fsm.node;
+package org.gbutil.fsm.node.connected;
 
 import org.gbutil.fsm.IState;
+import org.gbutil.fsm.node.ISMNode;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
-public abstract class SMConnectedNode<L extends Enum<L>, S extends IState> implements ISMConnectedNode<L, S> {
+public abstract class SMConnectedNode<L, S extends IState> implements ISMConnectedNode<L, S> {
     protected Map<L, ISMNode<S>> mNodeMap;
     protected String mName;
 
@@ -33,14 +33,18 @@ public abstract class SMConnectedNode<L extends Enum<L>, S extends IState> imple
     }
 
     @Override
-    public Set<L> getConnectorsTo(ISMNode<S> node) {
-        return mNodeMap.keySet().stream().filter(langElement -> mNodeMap.get(langElement) == node).
-                collect(Collectors.toSet());
+    public boolean hasConnectedNode(L langElement) {
+        return mNodeMap.containsKey(langElement);
     }
 
     @Override
-    public boolean hasConnectedNode(L langElement) {
-        return mNodeMap.containsKey(langElement);
+    public Collection<ISMNode<S>> getAllConnected() {
+        return mNodeMap.values();
+    }
+
+    @Override
+    public final boolean isEndNode() {
+        return false;
     }
 
     @Override

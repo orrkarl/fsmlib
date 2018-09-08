@@ -1,5 +1,7 @@
 package org.gbutil.graph;
 
+import org.gbutil.Tuple.Tuple2;
+
 import java.util.*;
 
 public class TrajanAlgorithm<T> {
@@ -35,6 +37,10 @@ public class TrajanAlgorithm<T> {
         }
     }
 
+    private TrajanAlgorithm(Tuple2<List<T>, boolean[][]> graph) {
+        this(graph.first, graph.second);
+    }
+
     public static <T> List<Set<T>> getStronglyConnectedComponents(List<T> nodes, boolean[][] connectionMatrix) {
         assert (connectionMatrix.length == nodes.size());
         assert (Arrays.stream(connectionMatrix).filter(arr -> arr.length != nodes.size()).count() == 0);
@@ -42,9 +48,17 @@ public class TrajanAlgorithm<T> {
         return algorithm.executeAlgorithm();
     }
 
+    public static <T> List<Set<T>> getStronglyConnectedComponents(Tuple2<List<T>, boolean[][]> graph) {
+        return getStronglyConnectedComponents(graph.first, graph.second);
+    }
+
     public static <T> boolean hasStronglyConnectedComponents(List<T> nodes, boolean[][] connectionMatrix) {
         List<Set<T>> res = getStronglyConnectedComponents(nodes, connectionMatrix);
-        return res.size() != 1 || res.get(0).size() != 0;
+        return (res.size() == 1 && res.get(0).size() != 0) || res.size() == 0;
+    }
+
+    public static <T> boolean hasStronglyConnectedComponents(Tuple2<List<T>, boolean[][]> graph) {
+        return hasStronglyConnectedComponents(graph.first, graph.second);
     }
 
     private void findStronglyConnectedRec(TrajanNode node) {
