@@ -1,6 +1,5 @@
 package org.gbutil.fsm.node.connected;
 
-import org.gbutil.fsm.IState;
 import org.gbutil.fsm.node.ISMNode;
 
 import java.util.Collection;
@@ -8,7 +7,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-public abstract class SMConnectedNode<L, S extends IState> implements ISMConnectedNode<L, S> {
+/**
+ * Implementation of a connected node using a node {@link Map}
+ *
+ * @param <L> Language set (type of possible connections)
+ * @param <S> State argument (type of the argument the fsm receives)
+ * @see ISMConnectedNode
+ */
+public abstract class SMConnectedNode<L, S> implements ISMConnectedNode<L, S> {
     protected Map<L, ISMNode<S>> mNodeMap;
     protected String mName;
 
@@ -30,11 +36,6 @@ public abstract class SMConnectedNode<L, S extends IState> implements ISMConnect
     @Override
     public boolean isConnectedTo(ISMNode<S> node) {
         return mNodeMap.containsValue(node);
-    }
-
-    @Override
-    public boolean hasConnectedNode(L langElement) {
-        return mNodeMap.containsKey(langElement);
     }
 
     @Override

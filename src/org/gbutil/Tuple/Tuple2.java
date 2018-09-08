@@ -1,5 +1,11 @@
 package org.gbutil.Tuple;
 
+/**
+ * A 2-tuple of objects
+ *
+ * @param <T> type of first argument
+ * @param <G> type of second argument
+ */
 public class Tuple2<T, G> {
     public T first;
     public G second;

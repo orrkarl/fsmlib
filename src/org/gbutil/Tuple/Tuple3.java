@@ -1,5 +1,12 @@
 package org.gbutil.Tuple;
 
+/**
+ * A 3-tuple of objects
+ *
+ * @param <T> type of first argument
+ * @param <G> type of second argument
+ * @param <V> type of third argument
+ */
 public class Tuple3<T, G, V> {
     public T first;
     public G second;

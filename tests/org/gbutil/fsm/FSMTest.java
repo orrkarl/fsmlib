@@ -1,8 +1,6 @@
-package org.gbutil.graph;
+package org.gbutil.fsm;
 
 import org.gbutil.Tuple.Tuple3;
-import org.gbutil.fsm.FiniteStateMachine;
-import org.gbutil.fsm.IState;
 import org.gbutil.fsm.node.NodeFactory;
 import org.gbutil.fsm.node.connected.ISMConnectedNode;
 import org.gbutil.fsm.node.end.SMEndNode;
@@ -13,6 +11,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FSMTest {
 
-    static Boolean[] values = {Boolean.FALSE, Boolean.TRUE};
+    private static Boolean[] values = {Boolean.FALSE, Boolean.TRUE};
 
-    static class ComplexState implements IState {
+    static class ComplexState {
         boolean[] values;
         String name;
 
@@ -43,7 +42,7 @@ class FSMTest {
         }
     }
 
-    static class IntegerState implements IState {
+    static class IntegerState {
         public int value;
 
         public IntegerState(int value) {
@@ -51,7 +50,6 @@ class FSMTest {
         }
 
         public int getValue() {
-            value = (value + 1) % 2;
             return value;
         }
     }
@@ -85,11 +83,47 @@ class FSMTest {
     }
 
     @Test
+    @DisplayName("callback")
+    void callback() {
+        List<Integer> res = new LinkedList<>();
+        Function<IntegerState, Boolean> parser = n -> n.getValue() < 10;
+        Consumer<IntegerState> callback = n -> res.add(n.getValue());
+        ISMConnectedNode<Boolean, IntegerState> initial =
+                NodeFactory.mkConnectedNode("initial", parser, callback);
+        ISMConnectedNode<Boolean, IntegerState> node1 =
+                NodeFactory.mkConnectedNode("node1", parser, callback);
+        SMEndNode<IntegerState> TRUE =
+                NodeFactory.mkEndNode("TRUE", true, callback);
+        SMEndNode<IntegerState> FALSE =
+                NodeFactory.mkEndNode("FALSE", false, callback);
+
+        initial.setConnectedNode(true, node1);
+        node1.setConnectedNode(true, TRUE);
+        FiniteStateMachine<Boolean, IntegerState> fsm = new FiniteStateMachine<>("test", initial);
+        fsm.attachOpenedTo(FALSE, values);
+
+        List<Integer> success = new LinkedList<>();
+        List<Integer> fail = new LinkedList<>();
+        success.add(5);
+        success.add(5);
+        success.add(5);
+        fail.add(15);
+        fail.add(15);
+
+        fsm.apply(new IntegerState(5));
+        assertTrue(res.equals(success));
+
+        res.clear();
+        fsm.apply(new IntegerState(15));
+        assertTrue(res.equals(fail));
+    }
+
+    @Test
     @DisplayName("Randomized")
     void random() {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 2; i < 50; i++) {
             Tuple3<FiniteStateMachine<Boolean, ComplexState>, ComplexState, ComplexState> tested =
-                    generateComplexTest();
+                    generateComplexTest(10);
 
             assertTrue(tested.first.apply(tested.second));
             assertFalse(tested.first.apply(tested.third));
@@ -97,9 +131,17 @@ class FSMTest {
         }
     }
 
+    @Test
+    @DisplayName("detached")
+    void detached() {
+        ISMConnectedNode<Boolean, ComplexState> node = NodeFactory.mkConnectedNode("node", ComplexState.getGetter(0));
+        FiniteStateMachine<Boolean, ComplexState> fsm = new FiniteStateMachine<>("failing", node);
 
-    static Tuple3<FiniteStateMachine<Boolean, ComplexState>, ComplexState, ComplexState> generateComplexTest() {
-        int size = 10;
+        assertFalse(fsm.apply(new ComplexState("fail1", false)));
+    }
+
+
+    private static Tuple3<FiniteStateMachine<Boolean, ComplexState>, ComplexState, ComplexState> generateComplexTest(int size) {
         boolean[] trueState = generateRandom(size);
         boolean[] falseState = generateRandom(size);
         if (Arrays.equals(trueState, falseState)) falseState[0] = !falseState[0];
@@ -118,7 +160,20 @@ class FSMTest {
         return new Tuple3<>(fsm, new ComplexState("true", trueState), new ComplexState("false", falseState));
     }
 
-    static boolean[] generateRandom(int size) {
+    static List<ISMConnectedNode<Boolean, ComplexState>> generateRandomMachine(int size) {
+        boolean[] trueState = generateRandom(size);
+        List<ISMConnectedNode<Boolean, ComplexState>> nodes = new LinkedList<>();
+        for (int i = 0; i < size; i++) {
+            nodes.add(NodeFactory.mkConnectedNode("node" + i, ComplexState.getGetter(i)));
+        }
+        for (int i = 0; i < size - 1; i++) {
+            nodes.get(i).setConnectedNode(trueState[i], nodes.get(i + 1));
+        }
+        nodes.get(size - 1).setConnectedNode(trueState[size - 1], NodeFactory.mkEndNode(true));
+        return nodes;
+    }
+
+    private static boolean[] generateRandom(int size) {
         boolean[] ret = new boolean[size];
         Random rand = new Random();
         for (int i = 0; i < size; i++) {

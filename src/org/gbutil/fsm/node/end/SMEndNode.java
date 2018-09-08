@@ -1,9 +1,14 @@
 package org.gbutil.fsm.node.end;
 
-import org.gbutil.fsm.IState;
 import org.gbutil.fsm.node.ISMNode;
 
-public abstract class SMEndNode<S extends IState> implements ISMNode<S> {
+/**
+ * An end node, which ends a given chain. This node doesn't call any other
+ * one at it's own execution
+ *
+ * @param <S> State argument (type of the argument the fsm receives)
+ */
+public abstract class SMEndNode<S> implements ISMNode<S> {
     protected boolean mValue;
     protected String mName;
 
