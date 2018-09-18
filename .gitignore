@@ -1,9 +1,11 @@
-# Intellij library locations (prevents library path collisions across different machines
+# IDE and gradle directories
 .idea/
+.gradle/
+
 
 # Prevent uploading giant fucking log files along with your commit
 log/
 
-# Why the fuck would you upload compiled .class files?
-out/
+# Don't upload build related files (and test results)
+build/
 
