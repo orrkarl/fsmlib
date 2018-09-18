@@ -1,7 +1,7 @@
 # IDE and gradle directories
 .idea/
 .gradle/
-
+*.iml
 
 # Prevent uploading giant fucking log files along with your commit
 log/

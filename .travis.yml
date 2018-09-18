@@ -8,4 +8,4 @@ before_install:
  - chmod +x gradlew
 
 script:
-  - ./gradlew build --scan -s
+  - echo "yes" > ./gradlew build --scan -s
